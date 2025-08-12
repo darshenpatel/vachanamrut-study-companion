@@ -1,0 +1,137 @@
+{
+  "documents": [
+    {
+      "id": "gadhada_1_1",
+      "content": "One who has firm faith in God and His Sant never experiences any difficulty, regardless of whatever severe calamities he may encounter. Why? Because he is confident that God is the all-doer and the cause of all causes; and also that God is extremely loving towards His devotees. Therefore, such a person never experiences any difficulties.",
+      "reference": "Gadhada I-1",
+      "page_number": 15,
+      "themes": [
+        "faith",
+        "devotion",
+        "surrender",
+        "trust"
+      ],
+      "embedding_hash": "140d6fd8"
+    },
+    {
+      "id": "gadhada_1_2",
+      "content": "A person who has love for God should not allow his mind to become attached to any object other than God. Even if his mind does get attached to some other object, he should understand that attachment to be a flaw and should attempt to remove it. In this manner, he should maintain love for God alone.",
+      "reference": "Gadhada I-2",
+      "page_number": 16,
+      "themes": [
+        "devotion",
+        "detachment",
+        "love",
+        "mind"
+      ],
+      "embedding_hash": "08cf9257"
+    },
+    {
+      "id": "sarangpur_5",
+      "content": "The key to spiritual progress is constant remembrance of God. One should always keep God in mind during all activities - whether eating, drinking, walking, or resting. This continuous awareness leads to realization of God's presence in all situations.",
+      "reference": "Sarangpur-5",
+      "page_number": 87,
+      "themes": [
+        "meditation",
+        "devotion",
+        "remembrance",
+        "awareness"
+      ],
+      "embedding_hash": "f11fdac2"
+    },
+    {
+      "id": "vadtal_18",
+      "content": "True surrender means offering all of one's actions, thoughts, and desires to God. When a devotee completely surrenders to God's will, he experiences divine grace and protection in all circumstances. Surrender is the ultimate spiritual practice.",
+      "reference": "Vadtal-18",
+      "page_number": 156,
+      "themes": [
+        "surrender",
+        "grace",
+        "devotion",
+        "practice"
+      ],
+      "embedding_hash": "6fd2ecc3"
+    },
+    {
+      "id": "ahmedabad_3",
+      "content": "Service to God and His devotees should be performed without any expectation of reward. Selfless service purifies the heart and brings one closer to divine realization. True service is done with humility and love.",
+      "reference": "Ahmedabad-3",
+      "page_number": 201,
+      "themes": [
+        "service",
+        "selflessness",
+        "purification",
+        "humility"
+      ],
+      "embedding_hash": "c939cfb4"
+    },
+    {
+      "id": "loyej_7",
+      "content": "Knowledge of the true nature of God, soul, and maya is essential for spiritual liberation. One should study the scriptures, contemplate their meaning, and seek guidance from realized souls to gain this knowledge.",
+      "reference": "Loyej-7",
+      "page_number": 243,
+      "themes": [
+        "knowledge",
+        "wisdom",
+        "study",
+        "guru"
+      ],
+      "embedding_hash": "64e51fec"
+    },
+    {
+      "id": "gadhada_2_13",
+      "content": "Dharma means righteousness in thought, word, and deed. A devotee should always follow dharma, even in difficult circumstances. Adherence to dharma protects one from spiritual downfall and ensures divine grace.",
+      "reference": "Gadhada II-13",
+      "page_number": 298,
+      "themes": [
+        "dharma",
+        "righteousness",
+        "conduct",
+        "protection"
+      ],
+      "embedding_hash": "692393d2"
+    },
+    {
+      "id": "kariyani_2",
+      "content": "The company of true devotees is invaluable for spiritual growth. In satsang, one learns spiritual principles, gains inspiration, and receives blessings. One should always seek and cherish the association of genuine devotees.",
+      "reference": "Kariyani-2",
+      "page_number": 334,
+      "themes": [
+        "satsang",
+        "devotees",
+        "association",
+        "growth"
+      ],
+      "embedding_hash": "a18c6e29"
+    },
+    {
+      "id": "vartal_11_001",
+      "content": "In Vartal-11, Shriji Maharaj spoke about the nature of true devotion and surrender. He explained that one who has realized the greatness of God develops unwavering faith and surrender. Such a person sees God as the ultimate reality behind all experiences and maintains constant remembrance of the divine form.",
+      "reference": "Vartal-11",
+      "page_number": null,
+      "themes": [
+        "devotion",
+        "surrender",
+        "faith",
+        "realization",
+        "remembrance"
+      ],
+      "embedding_hash": ""
+    },
+    {
+      "id": "vartal_12_001",
+      "content": "In Vartal-12, the discussion focused on the importance of satsang and association with true devotees. Maharaj emphasized that the company of realized souls purifies the mind and helps in spiritual progress.",
+      "reference": "Vartal-12",
+      "page_number": null,
+      "themes": [
+        "satsang",
+        "devotees",
+        "association",
+        "purification",
+        "progress"
+      ],
+      "embedding_hash": ""
+    }
+  ],
+  "total_documents": 10
+}
