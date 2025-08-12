@@ -2,6 +2,8 @@ from typing import List, Dict, Optional, Any
 import logging
 import json
 from datetime import datetime
+import httpx
+import asyncio
 
 from app.core.simple_config import settings
 from app.core.prompt_templates import SPIRITUAL_GUIDANCE_PROMPT, CONTEXT_SYNTHESIS_PROMPT
@@ -31,8 +33,7 @@ class AIService:
         Uses either OpenAI or Claude API based on configuration
         """
         
-        # For now, provide intelligent mock responses based on context
-        # This can be easily upgraded to real API calls later
+        # This is the base class - use specific implementations
         return self._generate_contextual_response(user_question, context_passages, theme)
     
     def _generate_contextual_response(
@@ -217,6 +218,229 @@ Practice surrender by accepting life's circumstances as God's plan while continu
 
 These practices, when followed sincerely, lead to spiritual realization and eternal happiness. Remember that spiritual progress requires patience, persistence, and God's grace."""
 
+class OpenAIService(AIService):
+    """Real OpenAI API service implementation"""
+    
+    def __init__(self):
+        super().__init__()
+        if not settings.OPENAI_API_KEY:
+            raise ValueError("OPENAI_API_KEY not configured")
+        
+    async def generate_response(
+        self,
+        user_question: str,
+        context_passages: List[Dict], 
+        theme: Optional[str] = None
+    ) -> str:
+        """Generate response using OpenAI API"""
+        try:
+            # Build context from passages
+            context_text = self._build_context_text(context_passages)
+            
+            # Create prompt
+            prompt = self._create_spiritual_guidance_prompt(
+                user_question, context_text, theme
+            )
+            
+            # Call OpenAI API
+            response = await self._call_openai_api(prompt)
+            return response
+            
+        except Exception as e:
+            logger.error(f"OpenAI API error: {e}")
+            # Fallback to contextual response
+            return self._generate_contextual_response(user_question, context_passages, theme)
+    
+    def _build_context_text(self, context_passages: List[Dict]) -> str:
+        """Build context text from retrieved passages"""
+        if not context_passages:
+            return "No specific passages found."
+        
+        context_parts = []
+        for i, passage in enumerate(context_passages[:3], 1):
+            content = passage.get('content', '')
+            reference = passage.get('reference', '')
+            similarity = passage.get('similarity_score', 0)
+            
+            context_parts.append(
+                f"Passage {i} (from {reference}, relevance: {similarity:.3f}):\n{content}"
+            )
+        
+        return "\n\n".join(context_parts)
+    
+    def _create_spiritual_guidance_prompt(
+        self, 
+        user_question: str, 
+        context_text: str, 
+        theme: Optional[str] = None
+    ) -> str:
+        """Create structured prompt for spiritual guidance"""
+        theme_context = f" focusing on the theme of {theme}" if theme else ""
+        
+        prompt = f"""You are a wise spiritual guide helping someone understand the Vachanamrut teachings. Your role is to provide compassionate, practical spiritual guidance based on the scriptural passages provided.
+
+CONTEXT FROM VACHANAMRUT:
+{context_text}
+
+USER QUESTION: {user_question}
+
+Please provide a thoughtful response{theme_context} that:
+1. Directly addresses their question with wisdom from the passages
+2. Offers practical spiritual guidance they can apply
+3. Maintains a compassionate, encouraging tone
+4. References the relevant passages naturally
+5. Keeps the response concise but meaningful (aim for 2-3 paragraphs)
+
+Your response should feel like guidance from a caring spiritual teacher, not an academic analysis."""
+
+        return prompt
+    
+    async def _call_openai_api(self, prompt: str) -> str:
+        """Make actual API call to OpenAI"""
+        headers = {
+            "Authorization": f"Bearer {settings.OPENAI_API_KEY}",
+            "Content-Type": "application/json"
+        }
+        
+        payload = {
+            "model": self.model,
+            "messages": [
+                {
+                    "role": "system", 
+                    "content": "You are a compassionate spiritual guide specializing in Vachanamrut teachings. Provide wise, practical guidance that helps people apply these ancient teachings to their modern lives."
+                },
+                {
+                    "role": "user", 
+                    "content": prompt
+                }
+            ],
+            "max_tokens": self.max_tokens,
+            "temperature": self.temperature
+        }
+        
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.post(
+                "https://api.openai.com/v1/chat/completions",
+                headers=headers,
+                json=payload
+            )
+            
+            if response.status_code != 200:
+                raise Exception(f"OpenAI API error: {response.status_code} - {response.text}")
+            
+            result = response.json()
+            return result["choices"][0]["message"]["content"].strip()
+
+class ClaudeService(AIService):
+    """Anthropic Claude API service implementation"""
+    
+    def __init__(self):
+        super().__init__()
+        if not settings.CLAUDE_API_KEY:
+            raise ValueError("CLAUDE_API_KEY not configured")
+        
+    async def generate_response(
+        self,
+        user_question: str,
+        context_passages: List[Dict], 
+        theme: Optional[str] = None
+    ) -> str:
+        """Generate response using Claude API"""
+        try:
+            # Build context from passages
+            context_text = self._build_context_text(context_passages)
+            
+            # Create prompt
+            prompt = self._create_spiritual_guidance_prompt(
+                user_question, context_text, theme
+            )
+            
+            # Call Claude API
+            response = await self._call_claude_api(prompt)
+            return response
+            
+        except Exception as e:
+            logger.error(f"Claude API error: {e}")
+            # Fallback to contextual response
+            return self._generate_contextual_response(user_question, context_passages, theme)
+    
+    def _build_context_text(self, context_passages: List[Dict]) -> str:
+        """Build context text from retrieved passages"""
+        if not context_passages:
+            return "No specific passages found."
+        
+        context_parts = []
+        for i, passage in enumerate(context_passages[:3], 1):
+            content = passage.get('content', '')
+            reference = passage.get('reference', '')
+            similarity = passage.get('similarity_score', 0)
+            
+            context_parts.append(
+                f"Passage {i} (from {reference}, relevance: {similarity:.3f}):\n{content}"
+            )
+        
+        return "\n\n".join(context_parts)
+    
+    def _create_spiritual_guidance_prompt(
+        self, 
+        user_question: str, 
+        context_text: str, 
+        theme: Optional[str] = None
+    ) -> str:
+        """Create structured prompt for spiritual guidance"""
+        theme_context = f" focusing on the theme of {theme}" if theme else ""
+        
+        prompt = f"""You are a wise spiritual guide helping someone understand the Vachanamrut teachings. Your role is to provide compassionate, practical spiritual guidance based on the scriptural passages provided.
+
+CONTEXT FROM VACHANAMRUT:
+{context_text}
+
+USER QUESTION: {user_question}
+
+Please provide a thoughtful response{theme_context} that:
+1. Directly addresses their question with wisdom from the passages
+2. Offers practical spiritual guidance they can apply
+3. Maintains a compassionate, encouraging tone
+4. References the relevant passages naturally
+5. Keeps the response concise but meaningful (aim for 2-3 paragraphs)
+
+Your response should feel like guidance from a caring spiritual teacher, not an academic analysis."""
+
+        return prompt
+    
+    async def _call_claude_api(self, prompt: str) -> str:
+        """Make actual API call to Claude"""
+        headers = {
+            "x-api-key": settings.CLAUDE_API_KEY,
+            "Content-Type": "application/json",
+            "anthropic-version": "2023-06-01"
+        }
+        
+        payload = {
+            "model": "claude-3-haiku-20240307",  # Use a reliable Claude model
+            "max_tokens": self.max_tokens,
+            "temperature": self.temperature,
+            "messages": [
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ]
+        }
+        
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.post(
+                "https://api.anthropic.com/v1/messages",
+                headers=headers,
+                json=payload
+            )
+            
+            if response.status_code != 200:
+                raise Exception(f"Claude API error: {response.status_code} - {response.text}")
+            
+            result = response.json()
+            return result["content"][0]["text"].strip()
+
 # Mock implementation for development
 class MockAIService(AIService):
     """Mock AI service for development without API dependencies"""
@@ -231,7 +455,24 @@ class MockAIService(AIService):
         return self._generate_contextual_response(user_question, context_passages, theme)
 
 def get_ai_service() -> AIService:
-    """Factory function for AI service"""
-    # For now, return mock service
-    # Can be easily switched to real API service later
+    """Factory function for AI service - chooses best available service"""
+    
+    # Try OpenAI first (since it's configured as the primary model)
+    if settings.OPENAI_API_KEY:
+        try:
+            logger.info("Using OpenAI service for AI responses")
+            return OpenAIService()
+        except Exception as e:
+            logger.warning(f"Failed to initialize OpenAI service: {e}")
+    
+    # Fallback to Claude if available
+    if settings.CLAUDE_API_KEY:
+        try:
+            logger.info("Using Claude service for AI responses")
+            return ClaudeService()
+        except Exception as e:
+            logger.warning(f"Failed to initialize Claude service: {e}")
+    
+    # Final fallback to mock service
+    logger.info("No API keys configured, using mock AI service")
     return MockAIService()
