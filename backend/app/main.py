@@ -47,8 +47,11 @@ if prod_origins := os.getenv("ALLOWED_ORIGINS"):
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
+    # In development, Vite may choose an alternate port (e.g. 3002) if the default is taken.
+    # Allow any localhost/127.0.0.1 origin with any port to avoid CORS preflight failures.
+    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$" if settings.DEBUG else None,
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
@@ -56,7 +59,7 @@ app.add_middleware(
 if not settings.DEBUG:
     app.add_middleware(
         TrustedHostMiddleware, 
-        allowed_hosts=["localhost", "127.0.0.1", "*.vercel.app", "*.railway.app"]
+        allowed_hosts=["localhost", "127.0.0.1", "*.vercel.app", "*.onrender.com"]
     )
 
 # Include API routes

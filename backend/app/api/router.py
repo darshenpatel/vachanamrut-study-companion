@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.api.endpoints import chat, themes, health
+from app.api.endpoints import chat, themes, health, analytics
 
 api_router = APIRouter()
 
@@ -20,4 +20,10 @@ api_router.include_router(
     themes.router,
     prefix="/themes",
     tags=["themes"]
+)
+
+api_router.include_router(
+    analytics.router,
+    prefix="/analytics",
+    tags=["analytics"]
 )

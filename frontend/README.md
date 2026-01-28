@@ -1,69 +1,108 @@
-# React + TypeScript + Vite
+# Vachanamrut Study Companion - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + TypeScript + Vite frontend for the Vachanamrut Study Companion.
 
-Currently, two official plugins are available:
+## UI Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The frontend features a modern sidebar-based layout inspired by Ramp/Linear design patterns.
 
-## Expanding the ESLint configuration
+### Layout Structure
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+┌──────────────────────────────────────────────────┐
+│ ┌─────────┐ ┌──────────────────────────────────┐ │
+│ │ Sidebar │ │ Main Content Area                │ │
+│ │ (240px) │ │                                  │ │
+│ │         │ │ Views:                           │ │
+│ │ • Home  │ │ - Home (Quick Search, Topics)    │ │
+│ │ • Topics│ │ - Topics (All 6 categories)      │ │
+│ │ • Search│ │ - Topic Detail (Questions)       │ │
+│ │         │ │ - Search (Chat interface)        │ │
+│ │ Quick   │ │                                  │ │
+│ │ Access  │ │                                  │ │
+│ │ ─────── │ │                                  │ │
+│ │ ⌘K      │ │                                  │ │
+│ └─────────┘ └──────────────────────────────────┘ │
+└──────────────────────────────────────────────────┘
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Features
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **Sidebar Navigation**: Home, Topics, Search views
+- **Command Palette**: ⌘K (Cmd+K) for quick topic navigation
+- **6 Topic Categories**:
+  - Daily Guidance
+  - Path of Devotion
+  - Mind & Emotions
+  - Relationships & Society
+  - Detachment & Renunciation
+  - Theological Concepts
+- **Chat Interface**: Full conversation with citations and theme badges
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Tech Stack
+
+- **React 18+** with TypeScript
+- **Vite** for fast development and building
+- **Tailwind CSS** for styling
+- **lucide-react** for icons
+- **class-variance-authority** for component variants
+- **Zod** for API response validation
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Run linter
+npm run lint
 ```
+
+## Key Dependencies
+
+```json
+{
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "lucide-react": "latest",
+    "class-variance-authority": "latest",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.3.1",
+    "zod": "^3.23.8"
+  }
+}
+```
+
+## Component Architecture
+
+### UI Components (`src/components/ui/`)
+
+- `Button.tsx` - Variants: default, destructive, outline, secondary, ghost, link
+- `Input.tsx` - Text input with focus states
+- `Badge.tsx` - Variants: default, secondary, destructive, outline
+- `ErrorBoundary.tsx` - Error handling wrapper
+- `LoadingSpinner.tsx` - Loading indicator
+
+### Design Tokens (`src/index.css`)
+
+```css
+:root {
+  --background: #fafafa;
+  --foreground: #0f0f0f;
+  --surface: #ffffff;
+  --border: rgba(0, 0, 0, 0.1);
+  --text-secondary: #737373;
+  --radius: 0.625rem;
+}
+```
+
+## ESLint Configuration
+
+For production, update the configuration to enable type-aware lint rules. See the original Vite template documentation for details.

@@ -15,8 +15,14 @@
 ### Styling & UI
 - **Tailwind CSS** for rapid, responsive styling
   - Mobile-first approach
-  - Consistent design system
-  - Easy customization for spiritual/contemplative aesthetic
+  - Consistent design system with neutral gray palette
+  - Inspired by Ramp/Linear design patterns
+- **lucide-react** for consistent iconography
+  - Sun, Heart, Brain, Users, Leaf, Library icons for topic categories
+  - Clean, minimal icon style
+- **class-variance-authority** for component variants
+  - Button variants (default, ghost, outline, secondary, destructive)
+  - Badge variants for theme tags
 
 ### State Management
 - **React Context + useReducer** for app state
@@ -102,11 +108,38 @@
 - **TypeScript** for type safety
 - **Pytest** for backend testing
 - **React Testing Library** for frontend testing
+- **Zod** for runtime type validation of API responses
 
 ### Documentation
 - **Storybook** for component documentation (optional)
 - **FastAPI** automatic API docs
 - **README** files for setup and deployment
+
+## UI Design System
+
+### Layout Architecture
+- **Sidebar Navigation**: Fixed 240px left sidebar
+- **Multi-View System**: Home, Topics, Topic Detail, Search views
+- **Command Palette**: ⌘K triggered modal for quick navigation
+
+### Design Tokens
+```css
+/* Core Colors */
+--background: #fafafa;
+--foreground: #0f0f0f;
+--surface: #ffffff;
+--border: rgba(0, 0, 0, 0.1);
+--text-secondary: #737373;
+
+/* Component Styling */
+--radius: 0.625rem;
+--shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+```
+
+### Component Variants
+- **Button**: default, destructive, outline, secondary, ghost, link
+- **Badge**: default, secondary, destructive, outline
+- **Input**: Standard with focus states and error handling
 
 ## Security Considerations
 

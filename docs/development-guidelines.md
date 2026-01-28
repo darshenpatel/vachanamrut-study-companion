@@ -12,41 +12,52 @@
 
 #### Component Structure Template
 ```tsx
-// components/chat/MessageBubble.tsx
-import React from 'react';
-import { cn } from '@/utils/formatting';
+// components/ui/Button.tsx - Using class-variance-authority for variants
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/utils/formatting";
 
-interface MessageBubbleProps {
-  message: string;
-  isUser: boolean;
-  timestamp: Date;
-  citation?: string;
-  className?: string;
-}
+const buttonVariants = cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50",
+  {
+    variants: {
+      variant: {
+        default: "bg-gray-900 text-white hover:bg-gray-800",
+        destructive: "bg-red-600 text-white hover:bg-red-700",
+        outline: "border border-gray-200 bg-white text-gray-900 hover:bg-gray-50",
+        secondary: "bg-gray-100 text-gray-900 hover:bg-gray-200",
+        ghost: "hover:bg-gray-100 hover:text-gray-900",
+        link: "text-gray-900 underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-9 px-4 py-2",
+        sm: "h-8 rounded-md gap-1.5 px-3",
+        lg: "h-10 rounded-md px-6",
+        icon: "h-9 w-9 rounded-md",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+);
 
-export const MessageBubble: React.FC<MessageBubbleProps> = ({
-  message,
-  isUser,
-  timestamp,
-  citation,
-  className
-}) => {
-  return (
-    <div className={cn(
-      'flex flex-col gap-2 p-4 rounded-lg',
-      isUser ? 'bg-blue-500 text-white ml-auto' : 'bg-gray-100',
-      className
-    )}>
-      <p className="text-sm">{message}</p>
-      {citation && (
-        <cite className="text-xs opacity-75">{citation}</cite>
-      )}
-      <time className="text-xs opacity-50">
-        {timestamp.toLocaleTimeString()}
-      </time>
-    </div>
-  );
-};
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, ...props }, ref) => {
+    return (
+      <button
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    );
+  }
+);
 ```
 
 ### State Management
@@ -114,6 +125,7 @@ export const useChat = () => {
 - Create reusable utility classes in `index.css`
 - Leverage Tailwind's responsive design utilities
 - Maintain consistent spacing scale
+- Use neutral gray palette (inspired by Ramp/Linear)
 
 ```css
 /* src/index.css */
@@ -121,51 +133,114 @@ export const useChat = () => {
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --background: #fafafa;
+  --foreground: #0f0f0f;
+  --surface: #ffffff;
+  --border: rgba(0, 0, 0, 0.1);
+  --text-secondary: #737373;
+  --radius: 0.625rem;
+}
+
 @layer components {
-  .chat-bubble {
-    @apply p-4 rounded-lg shadow-sm transition-colors;
+  /* Card styles */
+  .card {
+    @apply bg-white rounded-lg border border-gray-200;
   }
   
-  .chat-bubble-user {
-    @apply bg-blue-500 text-white ml-auto max-w-xs;
+  .card-hover {
+    @apply transition-all hover:border-gray-300 hover:shadow-sm;
   }
   
-  .chat-bubble-assistant {
-    @apply bg-gray-100 text-gray-900 mr-auto max-w-md;
+  /* Message bubbles - neutral gray theme */
+  .message-bubble-user {
+    @apply bg-gray-900 text-white rounded-lg px-4 py-3 max-w-2xl;
+  }
+
+  .message-bubble-assistant {
+    @apply bg-white border border-gray-200 text-gray-900 rounded-lg p-5;
+  }
+
+  /* Sidebar navigation */
+  .sidebar-nav-item {
+    @apply w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors;
+  }
+  
+  .sidebar-nav-item-active {
+    @apply bg-gray-100 text-gray-900;
+  }
+  
+  .sidebar-nav-item-inactive {
+    @apply text-gray-600 hover:bg-gray-50 hover:text-gray-900;
   }
 }
 ```
 
 ### Mobile-First Development
 
-#### Responsive Design Approach
+#### App Layout with Sidebar
 ```tsx
-// Mobile-first component design
-const ChatInterface = () => {
+// Main App layout with sidebar navigation
+function App() {
+  const [viewMode, setViewMode] = useState<'home' | 'topics' | 'search' | 'topic-detail'>('home');
+  const [showCommandPalette, setShowCommandPalette] = useState(false);
+
   return (
-    <div className="
-      flex flex-col h-screen
-      p-4 md:p-6 lg:p-8
-      max-w-full md:max-w-4xl lg:max-w-6xl
-      mx-auto
-    ">
-      <div className="
-        flex-1 overflow-y-auto
-        space-y-3 md:space-y-4
-        pb-4 md:pb-6
-      ">
-        {/* Chat messages */}
-      </div>
-      <div className="
-        sticky bottom-0 bg-white
-        border-t pt-4
-        flex gap-3 md:gap-4
-      ">
-        {/* Chat input */}
+    <div className="h-screen bg-[#FAFAFA] flex">
+      {/* Sidebar - 240px fixed width */}
+      <aside className="w-60 border-r border-gray-200 bg-white flex flex-col">
+        <div className="p-4 border-b border-gray-200">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 bg-gray-900 rounded-md flex items-center justify-center">
+              <BookOpen className="w-4 h-4 text-white" />
+            </div>
+            <span className="font-semibold text-sm text-gray-900">Vachanamrut</span>
+          </div>
+        </div>
+
+        <nav className="flex-1 p-3">
+          {/* Navigation items */}
+          <button className="sidebar-nav-item sidebar-nav-item-active">
+            <Home className="w-4 h-4" />
+            Home
+          </button>
+          {/* Quick Access section */}
+        </nav>
+
+        <div className="p-3 border-t border-gray-200">
+          <button onClick={() => setShowCommandPalette(true)}>
+            <Command className="w-4 h-4" />
+            Quick search
+            <kbd>⌘K</kbd>
+          </button>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Views: Home, Topics, Topic Detail, Search */}
       </div>
     </div>
   );
-};
+}
+```
+
+#### Command Palette (⌘K)
+```tsx
+// Keyboard shortcut for quick navigation
+useEffect(() => {
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      setShowCommandPalette(prev => !prev);
+    }
+    if (e.key === 'Escape') {
+      setShowCommandPalette(false);
+    }
+  };
+  window.addEventListener('keydown', handleKeyDown);
+  return () => window.removeEventListener('keydown', handleKeyDown);
+}, []);
 ```
 
 ### API Integration

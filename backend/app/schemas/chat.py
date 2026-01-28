@@ -44,6 +44,7 @@ class ChatResponse(BaseModel):
     citations: List[Citation] = Field(default_factory=list, description="Supporting citations")
     related_themes: List[str] = Field(default_factory=list, description="Related spiritual themes")
     timestamp: datetime = Field(default_factory=datetime.utcnow, description="Response timestamp")
+    interaction_id: Optional[str] = Field(None, description="ID for feedback tracking")
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -61,6 +62,7 @@ class ChatResponse(BaseModel):
                 ],
                 "relatedThemes": ["faith", "surrender", "devotion"],
                 "timestamp": "2023-01-01T12:00:00Z",
+                "interactionId": "20231201120000_1"
             }
         },
     )

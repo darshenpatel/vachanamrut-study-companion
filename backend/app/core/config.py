@@ -5,8 +5,8 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     # API Configuration
     API_HOST: str = "0.0.0.0"
-    API_PORT: int = 8000
-    DEBUG: bool = True
+    API_PORT: int = int(os.getenv("PORT", 8000))  # Render uses PORT env var
+    DEBUG: bool = os.getenv("ENVIRONMENT", "development") != "production"
     ENVIRONMENT: str = "development"
     SECRET_KEY: str = "your-secret-key-change-in-production"
     

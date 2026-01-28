@@ -1,0 +1,17 @@
+{
+  "metadata": {
+    "total_discourses": 0,
+    "processing_date": "2025-08-31T21:19:36.047534",
+    "processing_stats": {
+      "total_pages_processed": 777,
+      "discourses_extracted": 0,
+      "extraction_errors": 0,
+      "processing_time": 43.7496919631958,
+      "avg_quality_score": 0,
+      "completeness_percentage": 0.0,
+      "avg_completeness_score": 0
+    },
+    "format_version": "2.0"
+  },
+  "passages": []
+}

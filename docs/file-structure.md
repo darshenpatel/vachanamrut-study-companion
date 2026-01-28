@@ -17,84 +17,76 @@ vachanamrut-companion/
 
 ## Frontend Structure (React + TypeScript + Vite)
 
+The frontend uses a modern sidebar-based layout with multiple views (Home, Topics, Search), inspired by Ramp/Linear design patterns.
+
 ```
 frontend/
 ├── package.json
 ├── package-lock.json
 ├── tsconfig.json
+├── tsconfig.app.json
+├── tsconfig.node.json
 ├── vite.config.ts
 ├── tailwind.config.js
 ├── postcss.config.js
+├── eslint.config.js
 ├── index.html
 ├── .env.example
+├── Dockerfile
+├── nginx.conf
 ├── public/
-│   ├── favicon.ico
-│   ├── manifest.json
-│   └── icons/
+│   └── vite.svg
 ├── src/
-│   ├── main.tsx
-│   ├── App.tsx
-│   ├── index.css
+│   ├── main.tsx                    # Application entry point
+│   ├── App.tsx                     # Main app with sidebar layout, views, and command palette
+│   ├── App.css
+│   ├── index.css                   # Global styles, design tokens, Tailwind config
+│   ├── vite-env.d.ts
 │   ├── components/
-│   │   ├── ui/
-│   │   │   ├── Button.tsx
-│   │   │   ├── Input.tsx
-│   │   │   ├── Card.tsx
+│   │   ├── ui/                     # Core UI components
+│   │   │   ├── Button.tsx          # Button with variants (default, ghost, outline, etc.)
+│   │   │   ├── Input.tsx           # Text input with focus states
+│   │   │   ├── Badge.tsx           # Theme/tag badges
+│   │   │   ├── ErrorBoundary.tsx   # Error handling wrapper
+│   │   │   ├── LoadingSpinner.tsx  # Loading indicator
 │   │   │   └── index.ts
-│   │   ├── chat/
+│   │   ├── chat/                   # Chat-related components (legacy, kept for reference)
 │   │   │   ├── ChatInterface.tsx
 │   │   │   ├── MessageBubble.tsx
 │   │   │   ├── ChatInput.tsx
 │   │   │   ├── TypingIndicator.tsx
 │   │   │   └── index.ts
-│   │   ├── layout/
-│   │   │   ├── Header.tsx
-│   │   │   ├── Footer.tsx
-│   │   │   ├── Sidebar.tsx
-│   │   │   └── index.ts
-│   │   └── features/
-│   │       ├── themes/
-│   │       │   ├── ThemeExplorer.tsx
-│   │       │   ├── ThemeCard.tsx
-│   │       │   └── index.ts
-│   │       └── citations/
-│   │           ├── CitationDisplay.tsx
-│   │           ├── ReferenceLink.tsx
-│   │           └── index.ts
+│   │   └── features/               # Feature-specific components
+│   │       ├── ThemeSelector.tsx   # (Legacy) Theme dropdown
+│   │       └── index.ts
 │   ├── hooks/
-│   │   ├── useChat.ts
-│   │   ├── useApi.ts
-│   │   ├── useMobile.ts
-│   │   └── index.ts
+│   │   └── useChat.ts              # Chat state management hook
 │   ├── services/
-│   │   ├── api.ts
-│   │   ├── chatService.ts
-│   │   ├── themeService.ts
-│   │   └── index.ts
+│   │   └── api.ts                  # API service for backend communication
 │   ├── types/
-│   │   ├── chat.ts
-│   │   ├── api.ts
-│   │   ├── theme.ts
-│   │   └── index.ts
+│   │   ├── index.ts                # Core type definitions (Message, Citation, etc.)
+│   │   └── apiSchemas.ts           # Zod schemas for API validation
 │   ├── utils/
-│   │   ├── formatting.ts
-│   │   ├── validation.ts
-│   │   ├── constants.ts
-│   │   └── index.ts
-│   ├── context/
-│   │   ├── ChatContext.tsx
-│   │   ├── ThemeContext.tsx
-│   │   └── index.ts
+│   │   └── formatting.ts           # Utility functions (cn, formatTimestamp, etc.)
 │   └── assets/
-│       ├── images/
-│       ├── icons/
-│       └── fonts/
+│       └── react.svg
 └── tests/
-    ├── components/
-    ├── hooks/
-    ├── services/
-    └── utils/
+    └── test_api.py
 ```
+
+### Key Frontend Architecture
+
+**App.tsx Structure:**
+- Left sidebar (240px) with navigation (Home, Topics, Search)
+- Quick Access section with 4 topic shortcuts
+- Command Palette (⌘K) for keyboard-driven navigation
+- Four main views: Home, Topics, Topic Detail, Search/Chat
+
+**Design System:**
+- Neutral color palette (grays) inspired by Ramp/Linear
+- lucide-react icons throughout
+- class-variance-authority for component variants
+- Mobile-responsive sidebar layout
 
 ## Backend Structure (FastAPI + Python)
 

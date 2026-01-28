@@ -19,12 +19,15 @@ export const ChatInput: React.FC<ChatInputProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (message.trim() && !disabled) {
-      onSendMessage(message.trim());
-      setMessage('');
-      if (textareaRef.current) {
-        textareaRef.current.style.height = '44px';
-      }
+    const currentValue = (textareaRef.current?.value ?? message).trim();
+    if (!currentValue || disabled) return;
+
+    onSendMessage(currentValue);
+    setMessage('');
+    if (textareaRef.current) {
+      // Keep the DOM value in sync even if some environments don't trigger React's onChange reliably.
+      textareaRef.current.value = '';
+      textareaRef.current.style.height = '44px';
     }
   };
 
@@ -52,6 +55,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
             ref={textareaRef}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            onInput={(e) => setMessage((e.target as HTMLTextAreaElement).value)}
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
             disabled={disabled}

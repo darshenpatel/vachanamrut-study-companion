@@ -1,0 +1,24 @@
+{
+  "validation_date": "2025-08-31T21:32:06.262172",
+  "overall_score": 0.4602728395061728,
+  "overall_grade": "F (Critical Issues)",
+  "validation_time": 0.007332801818847656,
+  "summary": {
+    "total_tests_run": 8,
+    "tests_passed": 3,
+    "tests_failed": 5,
+    "pass_rate": 0.375,
+    "critical_components": [
+      "pdf_processing",
+      "system_integration"
+    ],
+    "components_validated": 4
+  },
+  "recommendations": [
+    "CRITICAL: System requires significant improvements before production deployment",
+    "Address critical issues in pdf_processing: 2 issues found",
+    "Address critical issues in system_integration: 1 issues found",
+    "Improve PDF processing quality - this is the foundation of data quality",
+    "Enhance semantic search performance - critical for user experience"
+  ]
+}
